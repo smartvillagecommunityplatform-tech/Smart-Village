@@ -1,0 +1,16 @@
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Django migrations (optional to ignore, but safe if you want)
+*/migrations/*.pyc
+*/migrations/*.py[cod]
+*/migrations/__pycache__/
+
+# Database file
+db.sqlite3
+
+# Environment variables / virtual environment
+.env
+.venv/
+
