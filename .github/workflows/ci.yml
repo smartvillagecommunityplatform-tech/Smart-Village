@@ -31,3 +31,6 @@ jobs:
           coverage run manage.py test
           coverage report
           coverage xml
+env:
+  SECRET_KEY: ${{ secrets.SECRET_KEY }}
+
