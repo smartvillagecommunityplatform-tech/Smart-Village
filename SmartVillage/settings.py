@@ -91,16 +91,20 @@ WSGI_APPLICATION = 'SmartVillage.wsgi.application'
 
 from decouple import config
 
+import os
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DATABASE_NAME'),
-        'USER': config('DATABASE_USER'),
-        'PASSWORD': config('DATABASE_PASSWORD'),
-        'HOST': config('DATABASE_HOST', default='localhost'),
-        'PORT': config('DATABASE_PORT', default='5432'),
+        'NAME': os.environ.get('DATABASE_NAME', 'postgres'),
+        'USER': os.environ.get('DATABASE_USER', 'postgres'),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD', ''),
+        # 'HOST': os.environ.get('DATABASE_HOST', 'localhost'),
+        'HOST': os.environ.get('DATABASE_HOST', 'postgres'), 
+        'PORT': os.environ.get('DATABASE_PORT', '5432'),
     }
 }
+
 
 
 

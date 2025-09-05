@@ -20,18 +20,20 @@ jobs:
         ports:
           - 5432:5432
         options: >-
-          --health-cmd pg_isready
+          --health-cmd pg_isready -U smartvillage_user -d smartvillage_db
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
 
     env:
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
-      DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
-      DATABASE_USER: ${{ secrets.DATABASE_USER }}
-      DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-      DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
-      DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
+      DATABASE_NAME: smartvillage_db
+      DATABASE_USER: smartvillage_user
+      DATABASE_PASSWORD: smartvillage_pass
+      DATABASE_HOST: postgres   # 👈 service name
+      DATABASE_PORT: 5432
+
+      # Email configs (kept secret)
       EMAIL_HOST: ${{ secrets.EMAIL_HOST }}
       EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
       EMAIL_USE_TLS: ${{ secrets.EMAIL_USE_TLS }}
