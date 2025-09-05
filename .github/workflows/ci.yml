@@ -3,14 +3,16 @@ name: Django CI
 on:
   push:
     branches: 
-          - main
-          - account
+      - main
+      - account
   pull_request:
     branches: [ main ]
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:  # <-- moved inside the job
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
 
     steps:
       - uses: actions/checkout@v3
@@ -31,6 +33,3 @@ jobs:
           coverage run manage.py test
           coverage report
           coverage xml
-env:
-  SECRET_KEY: ${{ secrets.SECRET_KEY }}
-
