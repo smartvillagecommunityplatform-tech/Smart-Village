@@ -96,11 +96,10 @@ import os
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DATABASE_NAME', 'postgres'),
-        'USER': os.environ.get('DATABASE_USER', 'postgres'),
-        'PASSWORD': os.environ.get('DATABASE_PASSWORD', ''),
-        # 'HOST': os.environ.get('DATABASE_HOST', 'localhost'),
-        'HOST': os.environ.get('DATABASE_HOST', 'postgres'), 
+        'NAME': os.environ.get('DATABASE_NAME', 'smartvillage_db'),
+        'USER': os.environ.get('DATABASE_USER', 'smartvillage_user'),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD', 'smartvillage_pass'),
+        'HOST': os.environ.get('DATABASE_HOST', 'postgres'),  # <-- IMPORTANT
         'PORT': os.environ.get('DATABASE_PORT', '5432'),
     }
 }
