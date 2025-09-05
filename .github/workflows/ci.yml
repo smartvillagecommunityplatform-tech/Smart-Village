@@ -2,7 +2,7 @@ name: Django CI
 
 on:
   push:
-    branches: [main, account]
+    branches: [main, account,event]
   pull_request:
     branches: [main]
 
@@ -25,20 +25,18 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
-
     env:
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
       DATABASE_NAME: smartvillage_db
       DATABASE_USER: smartvillage_user
       DATABASE_PASSWORD: smartvillage_pass
-      DATABASE_HOST: postgres   # <- match service name
+      DATABASE_HOST: postgres   # service name matches above
       DATABASE_PORT: 5432
       EMAIL_HOST: ${{ secrets.EMAIL_HOST }}
       EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
       EMAIL_USE_TLS: ${{ secrets.EMAIL_USE_TLS }}
       EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}
       EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
-
 
     steps:
       - uses: actions/checkout@v3
@@ -57,5 +55,6 @@ jobs:
       - name: Run Django tests with coverage
         run: |
           coverage run manage.py test
-          coverage report
+          coverage report --fail-under=85
           coverage xml
+
