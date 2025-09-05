@@ -1,4 +1,3 @@
-# tests/test_views.py
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
@@ -77,7 +76,8 @@ class RegisterViewTest(APITestCase):
         }
         response = self.client.post(self.url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertIn("Email exist", str(response.data))
+        # Check the correct field key
+        self.assertIn("Email exist", str(response.data['email']))
 
 
 class OTPVerifyViewTest(APITestCase):
@@ -101,10 +101,12 @@ class OTPVerifyViewTest(APITestCase):
         self.assertTrue(self.otp.is_used)
 
     def test_verify_otp_invalid_code(self):
-        data = {"email": self.user.email, "otp_code": "wrongcode"}
+        # OTP code must be <= 6 characters
+        data = {"email": self.user.email, "otp_code": "000000"}  
         response = self.client.post(self.url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertIn("Invalid or expired OTP", str(response.data))
+        # Check non_field_errors
+        self.assertIn("Invalid or expired OTP", str(response.data['non_field_errors']))
 
     def test_verify_otp_expired(self):
         # Expire OTP manually
@@ -113,4 +115,4 @@ class OTPVerifyViewTest(APITestCase):
         data = {"email": self.user.email, "otp_code": self.otp.code}
         response = self.client.post(self.url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertIn("OTP expired", str(response.data))
+        self.assertIn("OTP expired", str(response.data['non_field_errors']))

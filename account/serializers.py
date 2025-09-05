@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import User, Person, Location, OTP
 import uuid
 from .utils import generate_otp
+from rest_framework.validators import UniqueValidator
 
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,6 +26,9 @@ class RegisterSerializer(serializers.ModelSerializer):
     person = PersonSerializer()
     password = serializers.CharField(write_only=True, min_length=8)
     confirm_password = serializers.CharField(write_only=True)
+    email = serializers.EmailField(
+        validators=[UniqueValidator(queryset=User.objects.all(), message="Email exist.")]
+    )
 
     class Meta:
         model = User
@@ -93,7 +97,14 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 class OTPVerifySerializer(serializers.Serializer):
     email = serializers.EmailField()
-    otp_code = serializers.CharField(max_length=6)
+    otp_code = serializers.CharField(
+    min_length=6,
+    max_length=6,
+    error_messages={
+        "max_length": "OTP must be exactly 6 digits.",
+        "min_length": "OTP must be exactly 6 digits."
+    }
+)
 
     def validate(self, data):
         try:
