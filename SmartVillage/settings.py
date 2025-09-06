@@ -29,9 +29,10 @@ INSTALLED_APPS = [
     'Location',
 ]
 
+# MIDDLEWARE
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # must be after SecurityMiddleware
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -81,12 +82,11 @@ TIME_ZONE = 'Africa/Kigali'
 USE_I18N = True
 USE_TZ = True
 
-# STATIC FILES
+# STATIC FILES (for Render)
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'   # Where collectstatic will collect files
-
-# Optional: additional static dirs
-STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'          # collectstatic will copy all static files here
+STATICFILES_DIRS = [BASE_DIR / 'static']        # your local static folder
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # DEFAULT PRIMARY KEY
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
